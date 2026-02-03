@@ -6,7 +6,7 @@
 
 [![npm version](https://img.shields.io/npm/v/git-hooks-cli.svg)](https://www.npmjs.com/package/git-hooks-cli)
 [![npm downloads](https://img.shields.io/npm/dw/git-hooks-cli)](https://www.npmjs.com/package/git-hooks-cli)
-[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License](https://img.shields.io/npm/l/git-hooks-cli.svg)](LICENSE)
 
 </div>
 
