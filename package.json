@@ -1,8 +1,8 @@
 {
   "name": "git-hooks-cli",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
-  "description": "Modern, type-safe git hooks manager for Node.js",
+  "description": "Modern, type-safe git hooks manager with parallel execution, cross-platform support, and configuration validation",
   "bin": {
     "git-hooks": "./bin/git-hooks.js"
   },
@@ -37,10 +37,18 @@
     "hooks",
     "cli",
     "husky",
-    "lint-staged"
+    "lint-staged",
+    "pre-commit",
+    "pre-push",
+    "cross-platform",
+    "parallel",
+    "typescript"
   ],
   "author": "Peter W.",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/PeterPCW/git-hooks-cli"

@@ -4,8 +4,8 @@
 
 **Modern, type-safe git hooks manager for Node.js**
 
-[![npm version](https://img.shields.io/npm/v/git-hooks-cli.svg)](https://www.npmjs.com/package/git-hooks-cli)
-[![npm downloads](https://img.shields.io/npm/dw/git-hooks-cli)](https://www.npmjs.com/package/git-hooks-cli)
+[![NPM Package](https://img.shields.io/npm/v/git-hooks-cli.svg)](https://www.npmjs.com/package/git-hooks-cli)
+[![NPM Downloads](https://img.shields.io/npm/dw/git-hooks-cli)](https://www.npmjs.com/package/git-hooks-cli)
 [![License](https://img.shields.io/npm/l/git-hooks-cli.svg)](LICENSE)
 
 </div>
@@ -17,6 +17,10 @@
 - 🎯 **Simple API** - Register and run hooks with minimal boilerplate
 - 🔧 **Cross-platform** - Works on Windows, macOS, and Linux
 - ⚡ **Modern Node.js** - Built for Node.js 18+
+- 🔀 **Parallel execution** - Run multiple commands concurrently
+- 🎨 **Colored output** - Beautiful CLI output with auto-detection
+- ✋ **Ignore patterns** - Skip files matching patterns
+- ✅ **Configuration validation** - Built-in config checker
 
 ## Installation
 
@@ -70,6 +74,7 @@ runner.register({
   command: 'npm run lint',
   args: ['--fix'],
   condition: (files) => files.some(f => f.endsWith('.ts')),
+  parallel: false,
 })
 ```
 
@@ -106,6 +111,19 @@ Clear all registered hooks.
 runner.clear()
 ```
 
+### Runner Options
+
+```typescript
+// Enable parallel execution
+runner.parallelExec(true)
+
+// Set ignore patterns
+runner.ignore(['dist/', 'node_modules/'])
+
+// Enable colored output
+runner.useColors(true)
+```
+
 ## CLI Usage
 
 This package provides a CLI tool for managing git hooks:
@@ -129,6 +147,7 @@ npx git-hooks
 | `git-hooks uninstall [hook-name]` | Remove installed hooks |
 | `git-hooks list` | List configured hooks |
 | `git-hooks status` | Show installed vs configured hooks |
+| `git-hooks check` | Validate configuration |
 | `git-hooks run <hook-name>` | Run a hook manually |
 
 ### Configuration
@@ -145,12 +164,66 @@ Configure hooks in `package.json`:
 }
 ```
 
-Or in `.git-hooksrc`:
+Or in `.git-hookrc`:
 
 ```json
 {
   "pre-commit": "npm run lint",
   "pre-push": "npm run test"
+}
+```
+
+### Advanced Configuration
+
+**Simple array format:**
+
+```json
+{
+  "git-hooks": {
+    "pre-commit": ["npm run lint", "npm run typecheck", "npm run test"]
+  }
+}
+```
+
+**With parallel execution:**
+
+```json
+{
+  "git-hooks": {
+    "pre-commit": {
+      "run": ["lint", "typecheck"],
+      "parallel": true
+    }
+  }
+}
+```
+
+**With ignore patterns:**
+
+```json
+{
+  "git-hooks": {
+    "pre-commit": {
+      "run": "npm run test",
+      "ignore": ["dist/", "node_modules/", "*.log"]
+    }
+  }
+}
+```
+
+**Cross-platform with npm scripts:**
+
+```json
+{
+  "scripts": {
+    "lint": "eslint src/",
+    "test": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "git-hooks": {
+    "pre-commit": ["lint", "typecheck"],
+    "pre-push": "test"
+  }
 }
 ```
 
@@ -192,6 +265,18 @@ runner.register({
 })
 ```
 
+### Parallel Execution
+
+```typescript
+runner.parallelExec(true)
+
+runner.register({
+  name: 'pre-commit',
+  command: 'npm run lint && npm run typecheck',
+  parallel: true,
+})
+```
+
 ### Using with lint-staged
 
 ```typescript
@@ -201,9 +286,32 @@ runner.register({
 })
 ```
 
+### Cross-Platform Scripts
+
+```json
+{
+  "git-hooks": {
+    "pre-commit": ["lint", "test"]
+  },
+  "scripts": {
+    "lint": "eslint src/",
+    "test": "jest"
+  }
+}
+```
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `CI` | Enable CI mode (silent installation) |
+| `GIT_HOOKS_SILENT` | Silent installation mode |
+| `GIT_HOOKS_NO_COLOR` | Disable colored output |
+| `NO_COLOR` | Standard no-color flag |
+
 ## Contributing
 
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
+Contributions are welcome! Feel free to open issues or submit pull requests on GitHub.
 
 ## License
 
