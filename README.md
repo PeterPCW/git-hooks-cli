@@ -18,7 +18,7 @@
 - 🔧 **Cross-platform** - Works on Windows, macOS, and Linux
 - ⚡ **Modern Node.js** - Built for Node.js 18+
 - 🔀 **Parallel execution** - Run multiple commands concurrently
-- 🎨 **Colored output** - Beautiful CLI output with auto-detection
+- 🎨 **Styled output** - Optional pretty tables with `--styled` flag
 - ✋ **Ignore patterns** - Skip files matching patterns
 - ✅ **Configuration validation** - Built-in config checker
 
@@ -51,6 +51,36 @@ runner.register({
 // Run the hook
 await runner.run('pre-commit', ['file1.ts', 'file2.ts'])
 ```
+
+## Styled Output
+
+For beautiful table output, use the `--styled` flag:
+
+```bash
+# Simple output (zero dependencies)
+git-hooks list
+
+# Styled output (requires cli-table-modern)
+git-hooks list --styled
+```
+
+**Simple output:**
+```
+  ✓  pre-commit
+  ✗  pre-push
+```
+
+**Styled output** (with `--styled`):
+```
+┌──────────┬───────────┬─────────────┐
+│ Enabled  │ Hook      │ Command     │
+├──────────┼───────────┼─────────────┤
+│ ✓        │ pre-commit │ npm run lint │
+│ ✗        │ pre-push   │ npm run test│
+└──────────┴───────────┴─────────────┘
+```
+
+The `--styled` flag uses [cli-table-modern](https://github.com/PeterPCW/cli-table-modern) for pretty output. It is **lazily loaded** — cli-table-modern is only downloaded when you use `--styled`, keeping your bundle zero-dependency by default.
 
 ## API Reference
 
@@ -120,7 +150,7 @@ runner.parallelExec(true)
 // Set ignore patterns
 runner.ignore(['dist/', 'node_modules/'])
 
-// Enable colored output
+/ Enable colored output
 runner.useColors(true)
 ```
 
@@ -146,6 +176,7 @@ npx git-hooks
 | `git-hooks install [hook-name]` | Install git hooks from config |
 | `git-hooks uninstall [hook-name]` | Remove installed hooks |
 | `git-hooks list` | List configured hooks |
+| `git-hooks list --styled` | List hooks with pretty table output |
 | `git-hooks status` | Show installed vs configured hooks |
 | `git-hooks check` | Validate configuration |
 | `git-hooks run <hook-name>` | Run a hook manually |
@@ -269,7 +300,6 @@ runner.register({
 
 ```typescript
 runner.parallelExec(true)
-
 runner.register({
   name: 'pre-commit',
   command: 'npm run lint && npm run typecheck',
