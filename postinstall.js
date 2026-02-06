@@ -2,7 +2,7 @@
 import { existsSync } from 'fs';
 import { fork } from 'child_process';
 
-const cliPath = './bin/git-hooks.js';
+const cliPath = './dist/cli.js';
 
 if (existsSync(cliPath)) {
   fork(cliPath, ['install'], { stdio: 'inherit' });
