@@ -343,6 +343,10 @@ runner.register({
 
 Contributions are welcome! Feel free to open issues or submit pull requests on GitHub.
 
+## Interested in Consolidating?
+
+If you're a maintainer considering rolling similar functionality into your core package, I'm happy to point users your direction instead. Open an issue to discuss.
+
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
